@@ -1,3 +1,4 @@
+
 import sqlite3
 import os
 import click
@@ -29,7 +30,8 @@ while letter != "S":
     if letter == "N":
         vname = input("Voornaam: ")
         aname = input("Achternaam: ")
-        c.execute(f"""INSERT INTO Leerlingen VALUES ({vname},{aname})""")
+        c.execute(
+            f"""INSERT INTO Leerlingen(Voornaam, Achternaam) VALUES (?,?)""", (vname, aname))
     elif letter == "V":
         for lln in c.execute('SELECT * FROM Leerlingen ORDER BY Voornaam ASC'):
             print(lln[1] + " " + lln[2])
@@ -38,11 +40,11 @@ while letter != "S":
             print(lln[1] + " " + lln[2])
     elif letter == "X":
         id = (input("ID: "),)
-        c.execute(f'DELETE FROM Leerlingen WHERE ID={id}')
+        c.execute(f'DELETE FROM Leerlingen WHERE ID=', id)
     elif letter == "D":
         voornaam = (input("Voornaam: "),)
         lln = c.execute(
-            f'SELECT * FROM Leerlingen WHERE Voornaam={voornaam}').fetchall()
+            f'SELECT * FROM Leerlingen WHERE Voornaam=?', voornaam).fetchall()
 
         # Als er meer lln met dezelfde voornaam zijn, moet ge maar is bekijke
 
